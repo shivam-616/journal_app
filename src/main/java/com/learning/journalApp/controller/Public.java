@@ -11,8 +11,8 @@ public class Public {
 
     @Autowired
     private UserService userService;
-    @PostMapping("/create-user")
+    @PostMapping("/user")
     public void createUser(@RequestBody User user) {
-        userService.saveEntry(user);
+        userService.saveNewUser(user);
     }
 }

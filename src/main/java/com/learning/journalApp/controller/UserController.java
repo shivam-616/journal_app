@@ -19,29 +19,32 @@ public class UserController {
     @Autowired
     private UserEntryRepository userEntryRepository;
 
-    @PutMapping
+    @PutMapping("/update")
     public ResponseEntity<?> updateUser(@RequestBody User user) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User userndb = userService.findByusername(username);
-
-        userndb.setUsername(user.getUsername());
-        userndb.setPassword(user.getPassword());
-        userService.saveEntry(userndb);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-
+        String userName = authentication.getName();
+        System.out.println(userName);
+        User userInDb = userService.findByusername(userName);
+        userInDb.setUsername(user.getUsername());
+        userInDb.setPassword(user.getPassword());
+        userService.saveNewUser(userInDb);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/user")
-    public ResponseEntity<?> deleteUserBYId()  {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+//    @DeleteMapping
+//    public ResponseEntity<?> deleteUserBYId() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        userEntryRepository.deleteByUserName(authentication.getName());
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//
+//    }
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    @GetMapping
+    public ResponseEntity<?> greeting() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String greeting = "";
+        return new ResponseEntity<>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
     }
 }
 
