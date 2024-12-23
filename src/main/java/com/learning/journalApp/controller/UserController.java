@@ -31,13 +31,22 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @DeleteMapping
-//    public ResponseEntity<?> deleteUserBYId() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        userEntryRepository.deleteByUserName(authentication.getName());
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//
-//    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteUser() {
+        // Get the authenticated user's username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Check if user exists
+        User user = userService.findByusername(username);
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        // Delete user
+        userService.deleteByUsername(username);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+    }
 
 
     @GetMapping

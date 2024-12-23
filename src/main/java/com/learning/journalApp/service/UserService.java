@@ -36,7 +36,7 @@ public class UserService {
         userEntryRepository.deleteById(id);
     }
 
-    public User findByusername(String username){
+    public User findByusername(String username) {
         return userEntryRepository.findByUsername(username);
     }
 
@@ -51,5 +51,18 @@ public class UserService {
             return false;
         }
     }
+
+    public void deleteByUsername(String username) {
+        userEntryRepository.deleteByUsername(username);
+    }
+
+    public void saveAdmin(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("USER", "ADMIN"));
+        userEntryRepository.save(user);
+    }
+
 }
+
+
 
